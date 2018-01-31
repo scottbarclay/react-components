@@ -43,33 +43,43 @@ var GroceryList = (props) => (
 class GroceryListItem extends React.Component {
 	constructor(props) {
 		super(props);
+
+// `state` is just an object literal
+    this.state = {
+      done: false,
+      hover: false
+    };
 	}
+// When a list item is clicked, we will toggle the `done`
+  // boolean, and our component's `render` method will run again
+  onListItemClick() {
+    this.setState({
+      done: !this.state.done
+    });
+  }
+
+onListItemHover() {
+    this.setState({
+      hover: !this.state.hover                   
+    });
+  }
+
 	render() {
+
+// Making the style conditional on our `state` lets us 
+    // update it based on user interactions.
+    var style = {
+      textDecoration: this.state.done ? 'line-through' : 'none',
+      fontWeight: this.state.hover ? 'bold' : 'normal'
+    };
+
 		return (
-      <li>{this.props.item}</li>
+      <li style={style} onMouseEnter={this.onListItemHover.bind(this)} onMouseLeave={this.onListItemHover.bind(this)} onClick={this.onListItemClick.bind(this)}>{this.props.item}</li>
 		);
 	}
 }
 
 ReactDOM.render(<GroceryList groceryItems={['almonds', 'cranberries']}/>, document.getElementById("app"));
 
-// class TodoListItem extends React.Component {
-//   constructor(props) {
-//     super(props);
-//   }
-//   render() {
-//     return (
-//       <li>{this.props.todo}</li>
-//     );
-//   }
-// }
 
-// // Update our `TodoList` to use the new `TodoListItem` component
-// // This can still be a stateless function component!
-// var TodoList = (props) => (
-//   <ul>
-//     {props.todos.map(todo =>
-//       <TodoListItem todo={todo} />
-//     )}
-//   </ul>
-// );
+
